@@ -332,3 +332,7 @@ select:disabled {
         grid-template-columns: 1fr;
     }
 }
+
+.clickable-battery { cursor: pointer; transition: all 0.2s ease; }
+.clickable-battery:hover { transform: scale(1.05); color: var(--primary-color); }
+.clickable-battery.copied { color: #2ecc71; transform: scale(1.1); }
