@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battery Finder Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Authentication View -->
+        <div id="auth-view" class="view active">
+            <div class="glass-card auth-card">
+                <div class="icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-zap"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                </div>
+                <h1>Dispatcher Login</h1>
+                <p>Enter the access code to continue.</p>
+                <form id="login-form">
+                    <input type="password" id="password-input" placeholder="Access Code" required autofocus>
+                    <button type="submit" class="btn-primary">Login</button>
+                    <div id="login-error" class="error-msg"></div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Dashboard View -->
+        <div id="dashboard-view" class="view">
+            <header>
+                <div class="header-content">
+                    <div class="logo">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-battery-charging"><path d="M15 7h1a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2"/><path d="M6 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1"/><path d="m11 7-3 5h4l-3 5"/><line x1="22" x2="22" y1="11" y2="13"/></svg>
+                        <span>Battery Finder Pro</span>
+                    </div>
+                    <button id="logout-btn" class="btn-secondary">Logout</button>
+                </div>
+            </header>
+
+            <main class="container">
+                <div class="glass-card selector-card">
+                    <h2>Find Vehicle Battery</h2>
+                    
+                    <div class="selectors">
+                        <div class="input-group">
+                            <label for="year-select">Year</label>
+                            <select id="year-select" disabled>
+                                <option value="">Loading...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="make-select">Make</label>
+                            <select id="make-select" disabled>
+                                <option value="">Select Year First</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="model-select">Model</label>
+                            <select id="model-select" disabled>
+                                <option value="">Select Make First</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="engine-select">Engine / Trim</label>
+                            <select id="engine-select" disabled>
+                                <option value="">Select Model First</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results-container" class="results-container hidden">
+                    <!-- Populated by JS -->
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
