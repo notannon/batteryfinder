@@ -98,7 +98,7 @@ async function loadData() {
         
     } catch (error) {
         console.error("Failed to load data", error);
-        alert("Failed to load battery database.");
+        alert("Failed to load battery database: " + error.message + " | " + error.stack);
     }
 }
 
@@ -258,64 +258,64 @@ function displayAllResults() {
         `;
     }
 
-    html += \`<div class="battery-results-grid">\`;
+    html += `<div class="battery-results-grid">`;
 
     rows.forEach(row => {
-        const { Battery, Location, Reset, Aux, Difficult, Notes, AGM, 'Start-Stop': StartStop, Hybrid, Difference, Engine } = row;
+        const { Battery, Location, Reset, Aux, Difficult, Notes, AGM, 'Start-Stop': StartStop, Hybrid, Difference, Diesel, Engine } = row;
         
         let badgesHtml = '';
         
-        if (Difference) {
-            badgesHtml += \`<div class="badge primary-badge" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m7 19 5 3 5-3"/></svg> \${Difference}</div>\`;
+        let diffText = Difference || '';
+        if (Diesel === 'Yes' || Diesel === 'Y') diffText = diffText ? diffText + ' / Diesel' : 'Diesel';
+        if (Hybrid === 'Yes' || Hybrid === 'Y') diffText = diffText ? diffText + ' / Hybrid' : 'Hybrid';
+
+        if (diffText) {
+            badgesHtml += `<div class="badge primary-badge" style="background: rgba(46, 204, 113, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m17 5-5-3-5 3"/><path d="m7 19 5 3 5-3"/></svg> ${diffText}</div>`;
         }
         
         if (AGM) {
-            badgesHtml += \`<div class="badge agm"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AGM: \${AGM}</div>\`;
+            badgesHtml += `<div class="badge agm"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> AGM: ${AGM}</div>`;
         }
         
         if (Location) {
-            badgesHtml += \`<div class="badge location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Loc: \${Location}</div>\`;
+            badgesHtml += `<div class="badge location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Loc: ${Location}</div>`;
         }
         
         if (Difficult) {
-            badgesHtml += \`<div class="badge difficult"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Difficult Install: \${Difficult}</div>\`;
+            badgesHtml += `<div class="badge difficult"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Difficult Install: ${Difficult}</div>`;
         }
         
         if (Reset) {
-            badgesHtml += \`<div class="badge note"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Reset Required: \${Reset}</div>\`;
+            badgesHtml += `<div class="badge note"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg> Reset Required: ${Reset}</div>`;
         }
         
         if (Aux) {
-            badgesHtml += \`<div class="badge aux"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> Aux Battery: \${Aux}</div>\`;
+            badgesHtml += `<div class="badge aux"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="11" rx="2" ry="2"/><line x1="22" y1="11" x2="22" y2="13"/></svg> Aux Battery: ${Aux}</div>`;
         }
         
         if (StartStop) {
-            badgesHtml += \`<div class="badge note">Start-Stop: \${StartStop}</div>\`;
-        }
-        
-        if (Hybrid) {
-            badgesHtml += \`<div class="badge note">Hybrid: \${Hybrid}</div>\`;
+            badgesHtml += `<div class="badge note">Start-Stop: ${StartStop}</div>`;
         }
         
         if (Notes) {
-            badgesHtml += \`<div class="badge note">Note: \${Notes}</div>\`;
+            badgesHtml += `<div class="badge note">Note: ${Notes}</div>`;
         }
         
         const engineDesc = Engine || 'All Engines / Standard';
 
-        html += \`
+        html += `
             <div class="glass-card battery-result-card" style="margin-bottom: 15px;">
-                <div class="engine-title" style="font-weight: 600; font-size: 1.1rem; margin-bottom: 8px;">\${engineDesc}</div>
+                <div class="engine-title" style="font-weight: 600; font-size: 1.1rem; margin-bottom: 8px;">${engineDesc}</div>
                 <div class="battery-label">Required Battery Size (Click to Copy)</div>
-                <div class="battery-size clickable-battery" title="Click to copy">\${Battery || 'Check Manual'}</div>
-                <div class="vehicle-info">\${year} \${make} \${model}</div>
+                <div class="battery-size clickable-battery" title="Click to copy">${Battery || 'Check Manual'}</div>
+                <div class="vehicle-info">${year} ${make} ${model}</div>
                 
-                \${badgesHtml ? \`<div class="badges-container">\${badgesHtml}</div>\` : ''}
+                ${badgesHtml ? `<div class="badges-container">${badgesHtml}</div>` : ''}
             </div>
-        \`;
+        `;
     });
 
-    html += \`</div>\`;
+    html += `</div>`;
     
     resultsContainer.innerHTML = html;
     resultsContainer.classList.remove('hidden');
